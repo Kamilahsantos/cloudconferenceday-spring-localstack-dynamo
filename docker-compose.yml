@@ -1,0 +1,21 @@
+version: '3.0'
+
+services:
+
+  localstack:
+    image: localstack/localstack:latest
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+      - EDGE_PORT=4566
+      - SERVICES=dynamodb
+      - KINESIS_PROVIDER=kinesalite
+    ports:
+      - '4566:4566'
+
+    volumes:
+      - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+
+## comando para criar tabela no dynamo
+ # aws dynamodb create-table --table-name palestrante --attribute-definitions AttributeName=palestranteId,AttributeType=S --key-schema AttributeName=palestranteId,KeyType=HASH --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --endpoint-url http://localhost:4566
